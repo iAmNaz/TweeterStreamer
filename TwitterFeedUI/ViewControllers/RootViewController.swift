@@ -29,34 +29,69 @@ class RootViewController: UIViewController {
     @IBOutlet weak var keywordTextField: UITextField!
     @IBOutlet weak var feedViewContainer: UIView!
     @IBOutlet weak var loginViewContainer: UIView!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     var rootInteractor: RootInteractorProtocol!
     var appController: AppControllerProtocol!
     
+    fileprivate var currentKeyword: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        appController.didLaunch()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
+    }
+    
+    fileprivate func keywordEntered(keyword: String){
+        currentKeyword = keyword
+        rootInteractor.loadFeed(forKeyword: currentKeyword!)
     }
 }
 
 extension RootViewController: RootDisplayProtocol {
+    func showAuthView() {
+        statusLabel.isHidden = true
+        loginViewContainer.isHidden = false
+        feedViewContainer.isHidden = true
+        navigationBar.isHidden = true
+    }
+    
     func showFeedView() {
-        self.feedViewContainer.isHidden = false
-        self.loginViewContainer.isHidden = true
+        keywordTextField.isHidden = false
+        loginViewContainer.isHidden = true
+        navigationBar.isHidden = false
+        keywordTextField.becomeFirstResponder()
+        feedViewContainer.isHidden = false
+    }
+    
+    func showFeedView(withModels: [String]) {
+        feedViewContainer.isHidden = false
+    }
+    
+    func showLoadingFeeds() {
+        statusLabel.isHidden = false
+        statusLabel.text = "loading feeds..."
     }
 }
 
 extension RootViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let keyword = textField.text else  {
-            return true
+        
+        if (textField.text?.isEmpty)!  {
+            return false
         }
-        rootInteractor.loadFeed(forKeyword: keyword)
+        let lowerCased = textField.text!.lowercased()
+        view.endEditing(true)
+        keywordEntered(keyword: lowerCased)
         return true
     }
 }

@@ -12,16 +12,16 @@ class Configuration {
     static let sharedInstance = Configuration()
     lazy var environment: Environment = {
         if let configuration = Bundle.main.object(forInfoDictionaryKey: "Configuration") as? String {
-            if configuration.lowercased().range(of: "dev") != nil {
-                return Environment.Dev
+            if configuration.lowercased().range(of: "fake") != nil {
+                return Environment.Fake
             }
         }
-        return Environment.Prod
+        return Environment.Live
     }()
 }
 
 enum Environment: String {
-    case Dev = "dev"
-    case Prod = "prod"
+    case Fake = "fake"
+    case Live = "live"
 }
 

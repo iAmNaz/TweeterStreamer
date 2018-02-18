@@ -9,25 +9,19 @@
 import Foundation
 
 protocol DependencyFactoryProtocol {
-    func remoteAPI () -> APIProtocol
+    func remoteAPI(dataProcessor: TwitterDataProcessor) -> APIProtocol
     func dataStore () -> DataStoreProtocol
 }
 
 struct DependencyFactory: DependencyFactoryProtocol {
+    var env = Configuration.sharedInstance.environment
     
-    func remoteAPI() -> APIProtocol {
-        let twitterDateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
-        let incomingDataProcessor = IncomingDataProcessor()
-        incomingDataProcessor.dateFormat = twitterDateFormat
-        let api = TwitterAPI()
-            api.incomingDataProcessor = IncomingDataProcessor()
-        
-        return api
-//        if env == Environment.Dev {
-//            return FakeTwitterAPI()
-//        }else{
-//            return TwitterAPI()
-//        }
+    func remoteAPI(dataProcessor: TwitterDataProcessor) -> APIProtocol {
+        if env == Environment.Live {
+            let api = TwitterAPI(dataProcessor: dataProcessor)
+            return api
+        }
+        return FakeTwitterAPI(dataProcessor: dataProcessor)
     }
     
     func dataStore() -> DataStoreProtocol {

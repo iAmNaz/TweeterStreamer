@@ -9,26 +9,28 @@
 import UIKit
 import TwitterKit
 
-class TwitterAPI: NSObject, APIProtocol, URLSessionDelegate, URLSessionDataDelegate {
+class TwitterAPI: NSObject, APIProtocol {
+    fileprivate var dataProcessor: DataProcessorProtocol!
+    
     var appInteractor: AppInteractorProtocol!
-
-    var incomingDataProcessor: IncomingDataProcessor!
     
     fileprivate var defaultSession: URLSession! = nil
     fileprivate var dataTask: URLSessionDataTask?
     fileprivate let consumerKey = "SBqYuEU4gNi0ejWeTbwGwGLbb"
     fileprivate let consumerSecret = "QkFrmvz4i1giK8vsFEkI6wwUcggsOCq3rUlzV8RQheN3O5Js64"
     
-//    fileprivate let streamAPIEndPoint = "https://stream.twitter.com/1.1/statuses/filter.json"
-    fileprivate let streamAPIEndPoint = "https://stream.twitter.com/1.1/statuses/sample.json"
+    fileprivate let streamAPIEndPoint = "https://stream.twitter.com/1.1/statuses/filter.json"
+    fileprivate let sampleEndPoint = "https://stream.twitter.com/1.1/statuses/sample.json"
     fileprivate var session: TWTRSession?
     
-    init(dataProcessor: IncomingDataProcessor) {
+    init(dataProcessor: TwitterDataProcessor) {
         super.init()
-        self.incomingDataProcessor = dataProcessor
+        self.dataProcessor = dataProcessor
+        self.dataProcessor.delegate = self
         self.defaultSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     }
     
+    //MARK: - APIProtocol
     func initializeService() {
         Twitter.sharedInstance().start(withConsumerKey:consumerKey, consumerSecret:consumerSecret)
     }
@@ -48,12 +50,9 @@ class TwitterAPI: NSObject, APIProtocol, URLSessionDelegate, URLSessionDataDeleg
     }
     
     func reconnect(withKeyword keyword: String) {
-//        if error.domain == TWTRAPIErrorDomain && (error.code == .InvalidOrExpiredToken || error.code == .BadGuestToken) {
-//            
-//        }
-//        dataTask?.cancel()
-        let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: keyword)
-        let request = creatRequest(endPoint: streamAPIEndPoint)
+      let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: keyword)
+        let request = creatRequest(endPoint: sampleEndPoint)
+        print(request)
         dataTask = defaultSession.dataTask(with: request)
         dataTask?.resume()
     }
@@ -62,22 +61,30 @@ class TwitterAPI: NSObject, APIProtocol, URLSessionDelegate, URLSessionDataDeleg
         dataTask?.cancel()
     }
     
+    //MARK: - Private
     fileprivate func creatRequest(endPoint: String) -> URLRequest {
         let client = TWTRAPIClient.withCurrentUser()
-        
         return client.urlRequest(withMethod: HTTPMethod.GET, url: endPoint, parameters: nil, error: nil)
     }
 }
 
-extension TwitterAPI {
-    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        appInteractor.didEndSession()
+//MARK: - DataProcessorDelegate
+extension TwitterAPI: DataProcessorDelegate {
+    func didProcess(status: TweetStatus) {
+        self.appInteractor.savePost(post: status.post())
+    }
+}
+
+//MARK: - URLSessionDataDelegate
+extension TwitterAPI: URLSessionDataDelegate, URLSessionDelegate{
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        DispatchQueue.main.async {
+            self.dataProcessor.process(data: data)
+        }
     }
     
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        let json = try? JSONSerialization.jsonObject(with: data, options: [])
-        print(json)
-//        incomingDataProcessor.process(data: data)
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        appInteractor.didEndSession()
     }
     
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
@@ -85,8 +92,10 @@ extension TwitterAPI {
     }
 }
 
+//MARK: - Helper
 extension String {
     func appendTrackFilter(key: String) -> String {
         return self + "?track=" + key
     }
 }
+

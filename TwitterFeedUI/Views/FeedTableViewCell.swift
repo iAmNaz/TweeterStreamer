@@ -12,7 +12,8 @@ import Kingfisher
 class FeedTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImgeView: UIImageView!
     @IBOutlet weak var screenNameLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

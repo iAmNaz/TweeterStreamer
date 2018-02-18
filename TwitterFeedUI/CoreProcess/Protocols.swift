@@ -5,6 +5,7 @@
 //  Created by Nazario Mariano on 14/02/2018.
 //  Copyright © 2018 Nazario Mariano. All rights reserved.
 //
+
 /**
  Temporarily stores user information
  */
@@ -27,24 +28,28 @@ protocol APIProtocol {
     var appInteractor: AppInteractorProtocol! { get set }
     func authenticated() -> Bool
     func initializeService()
-    func authenticateClient()
+    func authenticateClient(completionBlk: @escaping (Error?) -> ())
     func reconnect(withKeyword keyword: String)
     func disconnect()
 }
 
 protocol DataStoreProtocol {
-    func insert()
+    var delegate: DataStoreDelegate? { get set }
+    func insert(post: PostProtocol)
     func fetchLatest()
+    func fetchPosts(timeStamp: Int) -> Post?
+    func fetchPost(withId id: String) -> Post?
 }
 
 protocol AppControllerProtocol {
-    var router: AppRoutingLogic! { get set }
+    var sceneManager: AppSceneManagerProtocol! { get set }
     var app: AppInteractorProtocol! { get set }
     
     func didLaunch()
     func pauseFeed()
     func remoteAPI() -> APIProtocol
     func dataStore() -> DataStoreProtocol
+    func authenticated() -> Bool
 }
 
 protocol AuthenticationDelegate {

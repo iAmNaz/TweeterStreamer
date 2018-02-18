@@ -11,10 +11,6 @@ import Dip
 import Dip_UI
 import TwitterKit
 
-extension LoginViewController: StoryboardInstantiatable { }
-extension RootViewController: StoryboardInstantiatable { }
-extension FeedTableViewController: StoryboardInstantiatable { }
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var appController: AppControllerProtocol!
@@ -23,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setupDIP(container: container)
-        appController = try! container.resolve() as AppControllerProtocol
-        appController.didLaunch()
+//        appController = try! container.resolve() as AppControllerProtocol
+//        appController.didLaunch()
         return true
     }
     

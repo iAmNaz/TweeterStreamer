@@ -9,6 +9,20 @@
 import UIKit
 
 class FakeDataStore: NSObject, DataStoreProtocol {
+    var delegate: DataStoreDelegate?
+    
+    func fetchPost(withId id: String) -> Post? {
+        return nil
+    }
+    
+    func fetchPosts(timeStamp: Int) -> Post? {
+        return nil
+    }
+    
+    func insert(post: PostProtocol) {
+        
+    }
+    
     func insert() {
         
     }

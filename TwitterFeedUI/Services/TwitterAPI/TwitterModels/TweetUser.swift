@@ -8,21 +8,26 @@
 
 import Foundation
 
+
 struct TweetUser: Codable {
     var id: Int
     var name: String
     var screenName: String
-    var location: String
-    var url: URL
-    var description: String
+    var url: String
+    var profileImage: String 
     
     enum CodingKeys: String, CodingKey
     {
         case id
         case name
         case screenName = "screen_name"
-        case location
         case url
-        case description
+        case profileImage = "profile_image_url_https"
+    }
+}
+
+extension TweetUser: CustomStringConvertible {
+    var description: String {
+        return "name: \(name)\nscreenName: \(screenName)\nprofileImage: \(profileImage)"
     }
 }

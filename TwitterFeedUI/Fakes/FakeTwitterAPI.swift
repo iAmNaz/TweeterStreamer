@@ -9,21 +9,30 @@
 import UIKit
 
 class FakeTwitterAPI: APIProtocol {
+    fileprivate var dataProcessor: DataProcessorProtocol
+    
+    init(dataProcessor: TwitterDataProcessor) {
+        self.dataProcessor = dataProcessor
+        
+    }
+    
+    
+    
     func reconnect(withKeyword keyword: String) {
         
     }
     
+    func authenticateClient(completionBlk: @escaping (Error?) -> ()) {
+        completionBlk(nil)
+    }
+
     var appInteractor: AppInteractorProtocol!
     
     func authenticated() -> Bool {
-        return true
+        return false
     }
     
     func initializeService() {
-        
-    }
-    
-    func authenticateClient() {
         
     }
     

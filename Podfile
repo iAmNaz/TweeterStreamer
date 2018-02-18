@@ -9,6 +9,7 @@ target 'TwitterFeedUI' do
   pod 'Dip'
   pod 'Dip-UI'
   pod 'TwitterKit'
+  pod 'RealmSwift'
   pod 'Kingfisher', '~> 4.0'
   pod 'MulticastDelegateSwift'
   target 'TwitterFeedUITests' do

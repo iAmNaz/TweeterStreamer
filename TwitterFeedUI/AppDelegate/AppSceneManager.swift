@@ -8,15 +8,15 @@
 
 import UIKit
 
-class AppRouter: AppRoutingLogic {
+class AppSceneManager: AppSceneManagerProtocol {
     var controller: AppControllerProtocol!
-    var liveFeedScene: LiveFeedInteractorProtocol!
+    var rootScene: RootInteractorProtocol!
     
-    func loadLiveFeedScene() {
-        liveFeedScene.startLiveFeed()
+    func loadAuthorizedScene() {
+        rootScene.loadAuthorized()
     }
-    
+
     func loadAuthScene() {
-        liveFeedScene.requestAuth()
+        rootScene.loadAuthNeeded()
     }
 }

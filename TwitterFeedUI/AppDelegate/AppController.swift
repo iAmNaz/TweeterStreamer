@@ -9,8 +9,7 @@
 import UIKit
 
 class AppController: NSObject, AppControllerProtocol {
-    
-    var router: AppRoutingLogic!
+    var sceneManager: AppSceneManagerProtocol!
     var app: AppInteractorProtocol!
     
     func didLaunch() {
@@ -29,9 +28,9 @@ class AppController: NSObject, AppControllerProtocol {
     //MARK: - Private
     private func displayUI() {
         if app.userCanUseApp() {
-            router.loadLiveFeedScene()
+            sceneManager.loadAuthorizedScene()
         }else{
-            router.loadAuthScene()
+            sceneManager.loadAuthScene()
         }
     }
     
@@ -41,5 +40,9 @@ class AppController: NSObject, AppControllerProtocol {
     
     func pauseFeed() {
         
+    }
+    
+    func authenticated() -> Bool {
+        return app.userCanUseApp()
     }
 }
