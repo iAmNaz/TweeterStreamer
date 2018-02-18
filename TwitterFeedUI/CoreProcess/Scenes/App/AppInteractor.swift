@@ -16,7 +16,6 @@ protocol AppSceneManagerProtocol
 }
 
 protocol AppUserSessionProtocol {
-    func logout()
     func userCanUseApp()->Bool
 }
 
@@ -26,28 +25,36 @@ protocol AppInteractorProtocol: AppUserSessionProtocol {
     func authenticate()
     func didAuthenticate()
     func didFailAuthentication(error: Error?)
-    func didEndSession()
     func didFail(error: Error?)
     func remoteAPI() -> APIProtocol
     func dataStore() -> DataStoreProtocol
-    func pauseLiveFeed()
     func startLiveStreamWithKeywod(keyword: String)
     func savePost(post: PostProtocol)
     func fetch(withId id: String) -> Post?
+    func fetchRecentPost()
+    func removePost(withId id: String)
+    func emptyPersistentStore()
+    func stopStreaming()
+    func resumeStream()
 }
 
 protocol DataStoreDelegate {
     func didInsert(post: Post)
 }
 
+import Foundation
+
 class AppInteractor: AppInteractorProtocol {
+
     var rootInteractor: RootInteractorProtocol!
     var liveFeedInteractor: LiveFeedInteractorProtocol!
+    var realTimeFeed = false
     
     fileprivate var dataStoreRef: DataStoreProtocol!
     fileprivate var routeRef: AppSceneManagerProtocol!
     fileprivate var remoteAPIRef: APIProtocol!
-
+    fileprivate var cachedKeyword: String?
+    
     init(dataStore: DataStoreProtocol, router: AppSceneManagerProtocol, remoteAPI: APIProtocol) {
         self.dataStoreRef = dataStore
         self.dataStoreRef.delegate = self
@@ -82,14 +89,6 @@ class AppInteractor: AppInteractorProtocol {
         return remoteAPIRef.authenticated()
     }
     
-    func logout() {
-        
-    }
-    
-    func didEndSession() {
-        
-    }
-    
     func didFail(error: Error?) {
         
     }
@@ -102,12 +101,19 @@ class AppInteractor: AppInteractorProtocol {
         return dataStoreRef
     }
     
-    func pauseLiveFeed() {
-        
+    func startLiveStreamWithKeywod(keyword: String){
+        cachedKeyword = keyword
+        remoteAPIRef.reconnect(withKeyword: keyword)
+        liveFeedInteractor.resumeLiveFeed()
     }
     
-    func startLiveStreamWithKeywod(keyword: String){
-        remoteAPIRef.reconnect(withKeyword: keyword)
+    func resumeStream() {
+        guard let kw = cachedKeyword else {
+            return
+        }
+        remoteAPIRef.reconnect(withKeyword: kw)
+        liveFeedInteractor.resumeLiveFeed()
+        rootInteractor.resumed(withKeyword: kw)
     }
     
     func savePost(post: PostProtocol) {
@@ -117,10 +123,35 @@ class AppInteractor: AppInteractorProtocol {
     func fetch(withId id: String) -> Post? {
         return dataStore().fetchPost(withId: id)
     }
+    
+    func removePost(withId id: String) {
+        dataStore().deletePost(withId: id)
+    }
+    
+    func fetchRecentPost() {
+        guard let post = dataStore().fetchRecent() else {
+            return
+        }
+        
+        if !realTimeFeed {
+            liveFeedInteractor.pushFeed(withId: post.id)
+        }
+    }
+    
+    func emptyPersistentStore() {
+        dataStore().truncate()
+    }
+    
+    func stopStreaming() {
+        remoteAPIRef.disconnect()
+        liveFeedInteractor.stopFeeds()
+    }
 }
 
 extension AppInteractor: DataStoreDelegate {
     func didInsert(post: Post) {
-        liveFeedInteractor.pushFeed(withId: post.id)
+        if realTimeFeed {
+            liveFeedInteractor.pushFeed(withId: post.id)
+        }
     }
 }

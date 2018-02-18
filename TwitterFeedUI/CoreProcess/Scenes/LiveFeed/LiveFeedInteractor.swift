@@ -10,25 +10,29 @@ protocol LiveFeedInteractorProtocol {
     var appInteractor: AppInteractorProtocol! { get set }
     var presenter: LiveFeedPresenterProtocol! { get set }
     func authorized() -> Bool
-    func stopFeeds()
-    func startLiveFeed()
-    func requestAuth()
+    func resumeLiveFeed()
     func pushFeed(withId id: String)
+    func postDisplayed(id: String)
+    func stopFeeds()
 }
+
+import Foundation
 
 class LiveFeedInteractor: LiveFeedInteractorProtocol {
     var appInteractor: AppInteractorProtocol!
     var presenter: LiveFeedPresenterProtocol!
     var timer = RepeatingTimer()
-    func requestAuth() {
-        
+
+    
+    init() {
+        timer.interval = 2
     }
     
-    func startLiveFeed() {
-//        timer.eventHandler = {
-//            print("timer")
-//        }
-//        timer.resume()
+    func resumeLiveFeed() {
+        timer.eventHandler = {
+            self.loadRecent()
+        }
+        timer.resume()
     }
     
     func pushFeed(withId id: String) {
@@ -42,8 +46,17 @@ class LiveFeedInteractor: LiveFeedInteractorProtocol {
         return appInteractor.userCanUseApp()
     }
 
+    func loadRecent() {
+        DispatchQueue.main.async {
+            self.appInteractor.fetchRecentPost()
+        }
+    }
+    
+    func postDisplayed(id: String) {
+        self.appInteractor.removePost(withId: id)
+    }
     
     func stopFeeds() {
-        
+        timer.suspend()
     }
 }

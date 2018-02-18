@@ -45,4 +45,13 @@ class AppController: NSObject, AppControllerProtocol {
     func authenticated() -> Bool {
         return app.userCanUseApp()
     }
+    
+    func didBecomeActive() {
+        app.resumeStream()
+    }
+    
+    func sentToBackground() {
+        app.stopStreaming()
+        app.emptyPersistentStore()
+    }
 }

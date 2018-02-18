@@ -11,12 +11,14 @@ protocol RootDisplayProtocol {
     func showFeedView(withModels: [String])
     func showLoadingFeeds()
     func showAuthView()
+    func showKeyword(keyword: String)
 }
 
 protocol RootPresenterProtocol {
     var viewController: RootDisplayProtocol! { get set }
     func presentFeedView()
     func presentAuthView()
+    func presentCached(keyword: String)
 }
 
 class RootPresenter: RootPresenterProtocol {
@@ -28,5 +30,9 @@ class RootPresenter: RootPresenterProtocol {
     
     func presentAuthView() {
         viewController.showAuthView()
+    }
+    
+    func presentCached(keyword: String) {
+        viewController.showKeyword(keyword: keyword)
     }
 }

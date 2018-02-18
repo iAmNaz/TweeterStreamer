@@ -7,19 +7,14 @@
 //
 
 import UIKit
+import Kingfisher
 
 class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
-    func showLiveFeeds() {
-        
-    }
-    
-    func showAuthView() {
-        
-    }
-    
-    func reloadFeedView(feeds: [String]) {
-        
-    }
+    var appController: AppControllerProtocol!
+    var containerView: ContainerViewDisplayProtocol!
+    var liveFeedInteractor: LiveFeedInteractorProtocol!
+    var posts = [PostViewModelProtocol]()
+    let cellIdentifier = "StatusCell"
     
     func showPost(post: PostViewModelProtocol) {
         posts.insert(post, at: 0)
@@ -27,29 +22,30 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         tableView.endUpdates()
         
+        liveFeedInteractor.postDisplayed(id: post.id)
+        
         if posts.count > 5 {
-            posts.removeLast()
+            let post = posts.removeLast()
             tableView.beginUpdates()
             tableView.deleteRows(at: [IndexPath(row: 5, section: 0)], with: .automatic)
             tableView.endUpdates()
+            removeCachedImage(withKey: post.id)
         }
     }
     
-    var appController: AppControllerProtocol!
-    var containerView: ContainerViewDisplayProtocol!
-    var liveFeedInteractor: LiveFeedInteractorProtocol!
-    var posts = [PostViewModelProtocol]()
-    let cellIdentifier = "StatusCell"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        liveFeedInteractor.startLiveFeed()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
+    // MARK: - Private
+    func removeCachedImage(withKey key: String){
+        ImageCache.default.removeImage(forKey: key)
+    }
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -68,8 +64,13 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
         cell.statusLabel.text = post.text
         cell.nameLabel.text = post.name
         if let imageURL = post.profileImageURL {
-            cell.profileImgeView.kf.setImage(with: imageURL)
+            let resource = ImageResource(downloadURL: imageURL, cacheKey: post.id)
+            cell.profileImgeView.kf.setImage(with: resource)
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        liveFeedInteractor.stopFeeds()
     }
 }

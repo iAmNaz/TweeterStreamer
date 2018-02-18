@@ -50,6 +50,8 @@
 		45EEC67C2036CE8000359432 /* RootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC67B2036CE8000359432 /* RootPresenter.swift */; };
 		45F49C07203958CE00918E02 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F49C06203958CE00918E02 /* RepeatingTimer.swift */; };
 		45F49C0B2039674900918E02 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F49C0A2039674900918E02 /* PostViewModel.swift */; };
+		45F49C102039CAFE00918E02 /* RoundedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F49C0F2039CAFE00918E02 /* RoundedCornerView.swift */; };
+		45F49C122039CD2300918E02 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F49C112039CD2300918E02 /* DetailViewController.swift */; };
 		7F0059005E6BB8E22770AB7E /* Pods_TwitterFeedUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7F3A9090216D0ACA90A466 /* Pods_TwitterFeedUI.framework */; };
 		83B41949943D42F659675AFC /* Pods_TwitterFeedUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0751DE8F6E44FE47B1357E /* Pods_TwitterFeedUITests.framework */; };
 /* End PBXBuildFile section */
@@ -123,6 +125,8 @@
 		45EEC67B2036CE8000359432 /* RootPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPresenter.swift; sourceTree = "<group>"; };
 		45F49C06203958CE00918E02 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
 		45F49C0A2039674900918E02 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		45F49C0F2039CAFE00918E02 /* RoundedCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornerView.swift; sourceTree = "<group>"; };
+		45F49C112039CD2300918E02 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4C5FC99DEC4FE0F31357616C /* Pods-TwitterFeedUIUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterFeedUIUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TwitterFeedUIUITests/Pods-TwitterFeedUIUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4D0751DE8F6E44FE47B1357E /* Pods_TwitterFeedUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterFeedUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B366F734197A99DB23207AB /* Pods-TwitterFeedUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterFeedUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TwitterFeedUITests/Pods-TwitterFeedUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -247,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				4589D29C20358B4A002FE02A /* TwitterButton.swift */,
+				45F49C0F2039CAFE00918E02 /* RoundedCornerView.swift */,
 				456B97032035AB5200BC3102 /* FeedTableViewCell.swift */,
 			);
 			path = Views;
@@ -258,6 +263,7 @@
 				45A728CD20359575007F1DCB /* FeedTableViewController.swift */,
 				45A728CB203594E6007F1DCB /* LoginViewController.swift */,
 				4589D26C2035809E002FE02A /* RootViewController.swift */,
+				45F49C112039CD2300918E02 /* DetailViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -757,6 +763,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45F49C122039CD2300918E02 /* DetailViewController.swift in Sources */,
 				45EEC6722036AB6E00359432 /* DIContainer.swift in Sources */,
 				45C739902035E78200A23CB9 /* TwitterAPI.swift in Sources */,
 				45BA137620383015005C55D7 /* TweetUserModel.swift in Sources */,
@@ -780,6 +787,7 @@
 				45EEC66D2036AA5400359432 /* FakeDataStore.swift in Sources */,
 				45BA137B203871E3005C55D7 /* Post.swift in Sources */,
 				45C739922035E78200A23CB9 /* TweetUser.swift in Sources */,
+				45F49C102039CAFE00918E02 /* RoundedCornerView.swift in Sources */,
 				45EEC6602036A1A800359432 /* AppSceneManager.swift in Sources */,
 				45EEC65C203672A100359432 /* AppController.swift in Sources */,
 				45EEC67A2036CE1700359432 /* RootInteractor.swift in Sources */,

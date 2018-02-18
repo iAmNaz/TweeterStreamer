@@ -51,7 +51,7 @@ class TwitterAPI: NSObject, APIProtocol {
     
     func reconnect(withKeyword keyword: String) {
       let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: keyword)
-        let request = creatRequest(endPoint: sampleEndPoint)
+        let request = creatRequest(endPoint: filteredEndpoint)
         print(request)
         dataTask = defaultSession.dataTask(with: request)
         dataTask?.resume()
@@ -83,10 +83,6 @@ extension TwitterAPI: URLSessionDataDelegate, URLSessionDelegate{
         }
     }
     
-    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        appInteractor.didEndSession()
-    }
-    
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         appInteractor.didFail(error: error)
     }
@@ -98,4 +94,3 @@ extension String {
         return self + "?track=" + key
     }
 }
-

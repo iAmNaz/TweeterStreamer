@@ -12,6 +12,7 @@ protocol RootInteractorProtocol {
     func loadAuthNeeded()
     func loadAuthorized()
     func loadFeed(forKeyword keyword: String)
+    func resumed(withKeyword: String)
 }
 
 class RootInteractor: RootInteractorProtocol {
@@ -28,5 +29,9 @@ class RootInteractor: RootInteractorProtocol {
     
     func loadFeed(forKeyword keyword: String) {
         appInteractor.startLiveStreamWithKeywod(keyword: keyword)
+    }
+    
+    func resumed(withKeyword: String) {
+        presenter.presentCached(keyword: withKeyword)
     }
 }

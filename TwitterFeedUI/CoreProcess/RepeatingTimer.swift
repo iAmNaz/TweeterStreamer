@@ -6,19 +6,23 @@
 //  Copyright © 2018 Nazario Mariano. All rights reserved.
 //
 
-import UIKit
-
 /// RepeatingTimer mimics the API of DispatchSourceTimer but in a way that prevents
 /// crashes that occur from calling resume multiple times on a timer that is
 /// already resumed (noted by https://github.com/SiftScience/sift-ios/issues/52
+
+import UIKit
+
 class RepeatingTimer {
+    
+    var interval: Int = 1
     
     private lazy var timer: DispatchSourceTimer = {
         let t = DispatchSource.makeTimerSource()
-        t.schedule(deadline: .now() + 3, repeating: .seconds(3))
+        t.schedule(deadline: .now(), repeating: .seconds(interval))
         t.setEventHandler(handler: { [weak self] in
             self?.eventHandler?()
         })
+        
         return t
     }()
     

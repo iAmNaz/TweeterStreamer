@@ -26,8 +26,4 @@ class LoginPresenter: LoginPresenterProtocol {
     func presentLogin() {
         viewController.showLoginView()
     }
-    
-    
-    
-    
 }

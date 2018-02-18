@@ -44,7 +44,6 @@ class RootViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -58,6 +57,10 @@ class RootViewController: UIViewController {
 }
 
 extension RootViewController: RootDisplayProtocol {
+    func showKeyword(keyword: String) {
+        keywordTextField.text = keyword
+    }
+    
     func showAuthView() {
         statusLabel.isHidden = true
         loginViewContainer.isHidden = false

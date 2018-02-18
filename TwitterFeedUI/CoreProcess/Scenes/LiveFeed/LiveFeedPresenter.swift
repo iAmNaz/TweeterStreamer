@@ -17,15 +17,10 @@ protocol PostViewModelProtocol {
 }
 
 protocol LiveFeedDisplayProtocol {
-    func showLiveFeeds()
-    func showAuthView()
-    func reloadFeedView(feeds: [String])
     func showPost(post: PostViewModelProtocol)
 }
 
 protocol LiveFeedPresenterProtocol {
-    func presentLiveFeeds()
-    func presentUpdatedFeeds(feeds: [String])
     func presentPost(post: Post)
 }
 
@@ -37,14 +32,6 @@ class LiveFeedPresenter: LiveFeedPresenterProtocol {
     init() {
         formatter.dateFormat = dateFormat
         formatter.locale = NSLocale.current
-    }
-    
-    func presentLiveFeeds() {
-        viewController.showLiveFeeds()
-    }
-    
-    func presentUpdatedFeeds(feeds: [String]){
-        viewController.reloadFeedView(feeds: feeds)
     }
     
     func presentPost(post: Post) {

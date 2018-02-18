@@ -9,6 +9,18 @@
 import UIKit
 
 class FakeDataStore: NSObject, DataStoreProtocol {
+    func truncate() {
+        
+    }
+    
+    func deletePost(withId id: String) {
+        
+    }
+    
+    func fetchRecent() -> Post? {
+        return nil
+    }
+    
     var delegate: DataStoreDelegate?
     
     func fetchPost(withId id: String) -> Post? {

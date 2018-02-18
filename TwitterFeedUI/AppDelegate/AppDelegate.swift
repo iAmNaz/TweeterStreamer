@@ -19,8 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setupDIP(container: container)
-//        appController = try! container.resolve() as AppControllerProtocol
-//        appController.didLaunch()
+        appController = try! container.resolve() as AppControllerProtocol
         return true
     }
     
@@ -30,6 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return false
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        appController.didBecomeActive()
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        appController.sentToBackground()
     }
 }
 
