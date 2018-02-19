@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ Generate the appropriate instance, service for a given environment
+*/
 protocol DependencyFactoryProtocol {
     func remoteAPI(dataProcessor: TwitterDataProcessor) -> APIProtocol
     func dataStore () -> DataStoreProtocol

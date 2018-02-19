@@ -7,6 +7,8 @@
 //
 
 protocol LoginInteractorProtocol {
+    var appInteractor: AppInteractorProtocol! { get set }
+    var presenter: LoginPresenterProtocol! { get set }
     func authenticate()
     func didAuthenticate()
 }

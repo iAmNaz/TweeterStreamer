@@ -27,10 +27,6 @@ class FakeDataStore: NSObject, DataStoreProtocol {
         return nil
     }
     
-    func fetchPosts(timeStamp: Int) -> Post? {
-        return nil
-    }
-    
     func insert(post: PostProtocol) {
         
     }

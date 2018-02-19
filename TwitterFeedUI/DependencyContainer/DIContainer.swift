@@ -19,15 +19,23 @@ extension UIViewController {
     }
 }
 
-extension LoginViewController: StoryboardInstantiatable { }
-extension RootViewController: StoryboardInstantiatable { }
-extension FeedTableViewController: StoryboardInstantiatable { }
+extension LoginViewController: StoryboardInstantiatable {}
+extension RootViewController: StoryboardInstantiatable {}
+extension FeedTableViewController: StoryboardInstantiatable {}
+extension DetailViewController: StoryboardInstantiatable {}
 
 extension AppDelegate {
-    func setupDIP(container: DependencyContainer) {
-        let dependencyFactory = DependencyFactory()
-//        let feedInteractor = LiveFeedInteractor()
+    func setupDIP() {
         
+        registerAppServices()
+        registerInteractors()
+        registerViewControllers()
+        
+        DependencyContainer.uiContainers = [container]
+    }
+    
+    func registerAppServices() {
+        let dependencyFactory = DependencyFactory()
         container.register(.singleton) { AppSceneManager() as AppSceneManagerProtocol }
             .resolvingProperties { (container, controller) in
                 var sceneManger = controller
@@ -36,27 +44,15 @@ extension AppDelegate {
         }
         
         container.register(.singleton) {
-            LiveFeedInteractor() as LiveFeedInteractorProtocol
-        }
-        
-        container.register(.singleton) {
-            RootInteractor() as RootInteractorProtocol
-        }
-        
-        container.register(.singleton) {
             dependencyFactory.remoteAPI(dataProcessor: TwitterDataProcessor()) as APIProtocol
         }
         
         container.register(.singleton) {
-            AppInteractor(dataStore: dependencyFactory.dataStore(), router: try! container.resolve() as AppSceneManagerProtocol, remoteAPI: try! container.resolve() as APIProtocol) as AppInteractor
+            AppInteractor(dataStore: dependencyFactory.dataStore(), router: try! self.container.resolve() as AppSceneManagerProtocol, remoteAPI: try! self.container.resolve() as APIProtocol) as AppInteractor
             }.resolvingProperties { (container, interactor) in
                 let appInteractor = interactor
                 appInteractor.liveFeedInteractor = try! container.resolve() as LiveFeedInteractorProtocol
                 appInteractor.liveFeedInteractor.appInteractor = appInteractor
-        }
-        
-        container.register(.singleton){
-            LiveFeedInteractor() as LiveFeedInteractorProtocol
         }
         
         container.register(.singleton) { AppController() as AppControllerProtocol }
@@ -65,14 +61,16 @@ extension AppDelegate {
                 appcontroller.app = try! container.resolve() as AppInteractor
                 appcontroller.sceneManager = try! container.resolve() as AppSceneManagerProtocol
         }
-        
+    }
+    
+    func registerViewControllers() {
         container.register(tag: UIViewController.Tags.loginView) { LoginViewController()
             }
             .resolvingProperties { (container, controller) in
                 controller.appController = try! container.resolve() as AppControllerProtocol
                 
                 let viewController = controller
-                let interactor = LoginInteractor()
+                var interactor = try! container.resolve() as LoginInteractorProtocol
                 interactor.appInteractor = try! container.resolve() as AppInteractor
                 let presenter = LoginPresenter()
                 
@@ -84,23 +82,14 @@ extension AppDelegate {
         container.register(tag: UIViewController.Tags.rootView) { RootViewController() }
             .resolvingProperties { (container, controller) in
                 controller.appController = try! container.resolve() as AppControllerProtocol
-
+                
                 var interactor = try! container.resolve() as RootInteractorProtocol
-                    controller.rootInteractor = interactor
+                controller.rootInteractor = interactor
                 let appInteractor = try! container.resolve() as AppInteractor
-                    appInteractor.rootInteractor = interactor
-                    interactor.appInteractor = appInteractor
+                appInteractor.rootInteractor = interactor
+                interactor.appInteractor = appInteractor
                 var presenter = try! container.resolve() as RootPresenterProtocol
-                    presenter.viewController = controller
-        }
-        
-        container.register(.singleton) { RootPresenter() as RootPresenterProtocol}
-        
-        container.register(.singleton) { RootInteractor() as RootInteractorProtocol }
-            .resolvingProperties { (container, interactor) in
-                var rootInteractor = interactor
-                let presenter = try! container.resolve() as RootPresenterProtocol
-                    rootInteractor.presenter = presenter
+                presenter.viewController = controller
         }
         
         container.register(tag: UIViewController.Tags.liveFeedView) { FeedTableViewController() }
@@ -112,6 +101,28 @@ extension AppDelegate {
                 controller.liveFeedInteractor.presenter = presenter
         }
         
-        DependencyContainer.uiContainers = [container]
+        container.register(tag: UIViewController.Tags.statusDetailView) { DetailViewController() }
+            .resolvingProperties { (container, controller) in
+                controller.liveFeedInteractor = try! container.resolve() as LiveFeedInteractorProtocol
+        }
+    }
+    
+    func registerInteractors() {
+        container.register(.singleton) { RootPresenter() as RootPresenterProtocol}
+        
+        container.register(.singleton) {
+            LiveFeedInteractor() as LiveFeedInteractorProtocol
+        }
+        
+        container.register(.singleton) {
+            LoginInteractor() as LoginInteractorProtocol
+        }
+        
+        container.register(.singleton) { RootInteractor() as RootInteractorProtocol }
+            .resolvingProperties { (container, interactor) in
+                var rootInteractor = interactor
+                let presenter = try! container.resolve() as RootPresenterProtocol
+                rootInteractor.presenter = presenter
+        }
     }
 }

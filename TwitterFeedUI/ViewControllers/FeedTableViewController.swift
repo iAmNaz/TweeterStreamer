@@ -10,10 +10,12 @@ import UIKit
 import Kingfisher
 
 class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
+    
     var appController: AppControllerProtocol!
     var containerView: ContainerViewDisplayProtocol!
     var liveFeedInteractor: LiveFeedInteractorProtocol!
-    var posts = [PostViewModelProtocol]()
+    fileprivate var posts: [PostViewModelProtocol]!
+    
     let cellIdentifier = "StatusCell"
     
     func showPost(post: PostViewModelProtocol) {
@@ -33,8 +35,14 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
         }
     }
     
+    func showEmptyFeed() {
+        posts = [PostViewModelProtocol]()
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        posts = [PostViewModelProtocol]()
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,5 +80,15 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         liveFeedInteractor.stopFeeds()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "StatusDetail" {
+            if let viewController = segue.destination as? DetailViewController {
+                let selectedIndexpath = tableView.indexPathForSelectedRow
+                let post = posts[(selectedIndexpath?.row)!]
+                viewController.post = post
+            }
+        }
     }
 }

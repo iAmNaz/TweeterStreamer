@@ -9,7 +9,16 @@
 import UIKit
 import RealmSwift
 
+enum PostFields {
+    static let timeStamp = "timeStamp"
+    static let id = "id"
+}
+
+/**
+Concrete data store using Realm
+*/
 class RealmDataStore: NSObject, DataStoreProtocol {
+    
     var delegate: DataStoreDelegate?
     let dataStoreQueue = DispatchQueue(label: "Realm Data Store Queue")
     let realm = try! Realm()
@@ -19,49 +28,48 @@ class RealmDataStore: NSObject, DataStoreProtocol {
             return
         }
         
+        let user = post.user
         try! realm.write {
             realm.delete(post)
+            realm.delete(user!)
         }
     }
     
     func fetchRecent() -> Post? {
         let posts = realm.objects(TweetStatusModel.self)
-        let sortedPosts = posts.sorted(byKeyPath: "timeStamp", ascending: false)
+        let sortedPosts = posts.sorted(byKeyPath: PostFields.timeStamp, ascending: false)
         
-        if sortedPosts.count > 0 {
-            return sortedPosts.first?.post()
+        guard let tweet = sortedPosts.first else {
+            return nil
         }
-        return nil
+
+        return tweet.post()
     }
     
-    func fetchPosts(timeStamp: Int) -> Post? {
-        let posts = realm.objects(TweetStatusModel.self).filter("timeStamp > \(timeStamp)")
-        let sortedPosts = posts.sorted(byKeyPath: "timeStamp", ascending: false)
-        return sortedPosts.first?.post()
-    }
     
     func fetchPost(withId id: String) -> Post? {
-        let posts = realm.objects(TweetStatusModel.self).filter("id = '\(id)'")
+        let posts = realm.objects(TweetStatusModel.self).filter("\(PostFields.id) = '\(id)'")
         let post = posts.first?.post()
         return post
     }
     
     func insert(post: PostProtocol) {
         
-        let cachedPost = realm.object(ofType: TweetStatusModel.self, forPrimaryKey: post.id)
-        
         //Prevent posting the same post
+        let cachedPost = realm.object(ofType: TweetStatusModel.self, forPrimaryKey: post.id)
+
         if cachedPost != nil {
             return
         }
         
+        //Insert transaction
         let user = TweetUserModel()
         user.id = post.postedBy.id
         user.name = post.postedBy.name
         user.screenName = post.postedBy.screenName
         user.url = post.postedBy.url
         user.profileImage = post.postedBy.profileImage
-    
+        
         let tweet = TweetStatusModel()
         tweet.dateCreated = post.dateCreated
         tweet.id = post.id
@@ -71,11 +79,12 @@ class RealmDataStore: NSObject, DataStoreProtocol {
     
         try! realm.write {
             realm.add(tweet)
-            
+            //Optional
             self.delegate?.didInsert(post: tweet.post()!)
         }
     }
     
+    //Remove all objects from datastore. Soon they will be outdated
     func truncate() {
         try! realm.write {
             let all = realm.objects(TweetUserModel.self)

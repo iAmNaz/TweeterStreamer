@@ -18,10 +18,12 @@ protocol PostViewModelProtocol {
 
 protocol LiveFeedDisplayProtocol {
     func showPost(post: PostViewModelProtocol)
+    func showEmptyFeed()
 }
 
 protocol LiveFeedPresenterProtocol {
     func presentPost(post: Post)
+    func presentEmptyFeed()
 }
 
 class LiveFeedPresenter: LiveFeedPresenterProtocol {
@@ -38,7 +40,10 @@ class LiveFeedPresenter: LiveFeedPresenterProtocol {
         
         let postVM = PostViewModel(id: "\(post.id)", screenName: post.postedBy.screenName, name: post.postedBy.name, text: post.text, profileImageString: post.postedBy.profileImage, dateCreated: formatter.string(from: post.dateCreated))
         
-        
         viewController.showPost(post: postVM)
+    }
+    
+    func presentEmptyFeed() {
+        viewController.showEmptyFeed()
     }
 }

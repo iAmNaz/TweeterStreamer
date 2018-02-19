@@ -14,6 +14,7 @@ protocol LiveFeedInteractorProtocol {
     func pushFeed(withId id: String)
     func postDisplayed(id: String)
     func stopFeeds()
+    func clearFeeds()
 }
 
 import Foundation
@@ -59,4 +60,9 @@ class LiveFeedInteractor: LiveFeedInteractorProtocol {
     func stopFeeds() {
         timer.suspend()
     }
+    
+    func clearFeeds() {
+        presenter.presentEmptyFeed()
+    }
+    
 }

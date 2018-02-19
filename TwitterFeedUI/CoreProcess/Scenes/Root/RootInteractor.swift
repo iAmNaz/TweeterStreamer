@@ -13,6 +13,9 @@ protocol RootInteractorProtocol {
     func loadAuthorized()
     func loadFeed(forKeyword keyword: String)
     func resumed(withKeyword: String)
+    func connectingToAPI()
+    func hasFinishedConnecting()
+    func connectionError(error: Error?)
 }
 
 class RootInteractor: RootInteractorProtocol {
@@ -33,5 +36,17 @@ class RootInteractor: RootInteractorProtocol {
     
     func resumed(withKeyword: String) {
         presenter.presentCached(keyword: withKeyword)
+    }
+    
+    func connectingToAPI() {
+        presenter.presentProgress()
+    }
+    
+    func hasFinishedConnecting() {
+        presenter.presentReadyFeed()
+    }
+    
+    func connectionError(error: Error?) {
+        presenter.present(error: error)
     }
 }

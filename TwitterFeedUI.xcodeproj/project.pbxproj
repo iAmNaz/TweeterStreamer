@@ -31,7 +31,6 @@
 		45C739952035E78200A23CB9 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C7398D2035E78200A23CB9 /* Protocols.swift */; };
 		45C739962035E78200A23CB9 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C7398F2035E78200A23CB9 /* UserInfo.swift */; };
 		45EEC65120366D5200359432 /* LiveFeedInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65020366D5200359432 /* LiveFeedInteractor.swift */; };
-		45EEC65320366D6900359432 /* AuthenticationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65220366D6900359432 /* AuthenticationInteractor.swift */; };
 		45EEC65620366E5200359432 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65520366E5200359432 /* UserProtocol.swift */; };
 		45EEC65820366EAE00359432 /* TwitterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65720366EAE00359432 /* TwitterUser.swift */; };
 		45EEC65A203671BE00359432 /* AppInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC659203671BE00359432 /* AppInteractor.swift */; };
@@ -106,7 +105,6 @@
 		45C7398D2035E78200A23CB9 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		45C7398F2035E78200A23CB9 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		45EEC65020366D5200359432 /* LiveFeedInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveFeedInteractor.swift; sourceTree = "<group>"; };
-		45EEC65220366D6900359432 /* AuthenticationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationInteractor.swift; sourceTree = "<group>"; };
 		45EEC65520366E5200359432 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		45EEC65720366EAE00359432 /* TwitterUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
 		45EEC659203671BE00359432 /* AppInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInteractor.swift; sourceTree = "<group>"; };
@@ -308,7 +306,6 @@
 			isa = PBXGroup;
 			children = (
 				45C739872035E78200A23CB9 /* TwitterAPI */,
-				45C7398C2035E78200A23CB9 /* Enums.swift */,
 				45C7398E2035E78200A23CB9 /* Entities */,
 			);
 			path = Services;
@@ -336,6 +333,7 @@
 		45C739972035E7BF00A23CB9 /* CoreProcess */ = {
 			isa = PBXGroup;
 			children = (
+				45C7398C2035E78200A23CB9 /* Enums.swift */,
 				45F49C0C2039A11E00918E02 /* Aux */,
 				45C7398D2035E78200A23CB9 /* Protocols.swift */,
 				45F49C06203958CE00918E02 /* RepeatingTimer.swift */,
@@ -352,7 +350,6 @@
 				45EEC6732036B1A500359432 /* Login */,
 				45EEC6632036A41500359432 /* LiveFeed */,
 				45EEC65D2036A08600359432 /* App */,
-				45EEC65220366D6900359432 /* AuthenticationInteractor.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -661,6 +658,7 @@
 				"${BUILT_PRODUCTS_DIR}/Dip-UI/Dip_UI.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MulticastDelegateSwift/MulticastDelegateSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
@@ -670,6 +668,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dip_UI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MulticastDelegateSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 			);
@@ -800,7 +799,6 @@
 				45F49C0B2039674900918E02 /* PostViewModel.swift in Sources */,
 				45F49C07203958CE00918E02 /* RepeatingTimer.swift in Sources */,
 				4589D26B2035809E002FE02A /* AppDelegate.swift in Sources */,
-				45EEC65320366D6900359432 /* AuthenticationInteractor.swift in Sources */,
 				45EEC65A203671BE00359432 /* AppInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

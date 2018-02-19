@@ -7,6 +7,9 @@
 //
 import RealmSwift
 
+/**
+ Represents a twitter user status
+*/
 class TweetUserModel: Object {
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String!

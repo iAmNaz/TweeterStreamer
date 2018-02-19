@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ This helps in easily switching which services, live or dummy instances to use
+ */
 class Configuration {
     static let sharedInstance = Configuration()
     lazy var environment: Environment = {

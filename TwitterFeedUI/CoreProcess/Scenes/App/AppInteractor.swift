@@ -25,7 +25,7 @@ protocol AppInteractorProtocol: AppUserSessionProtocol {
     func authenticate()
     func didAuthenticate()
     func didFailAuthentication(error: Error?)
-    func didFail(error: Error?)
+    func didFail(error: APIError?)
     func remoteAPI() -> APIProtocol
     func dataStore() -> DataStoreProtocol
     func startLiveStreamWithKeywod(keyword: String)
@@ -89,8 +89,8 @@ class AppInteractor: AppInteractorProtocol {
         return remoteAPIRef.authenticated()
     }
     
-    func didFail(error: Error?) {
-        
+    func didFail(error: APIError?) {
+        rootInteractor.connectionError(error: error)
     }
     
     func remoteAPI() -> APIProtocol {
@@ -105,12 +105,14 @@ class AppInteractor: AppInteractorProtocol {
         cachedKeyword = keyword
         remoteAPIRef.reconnect(withKeyword: keyword)
         liveFeedInteractor.resumeLiveFeed()
+        rootInteractor.connectingToAPI()
     }
     
     func resumeStream() {
         guard let kw = cachedKeyword else {
             return
         }
+        rootInteractor.connectingToAPI()
         remoteAPIRef.reconnect(withKeyword: kw)
         liveFeedInteractor.resumeLiveFeed()
         rootInteractor.resumed(withKeyword: kw)
@@ -133,12 +135,14 @@ class AppInteractor: AppInteractorProtocol {
             return
         }
         
+        rootInteractor.hasFinishedConnecting()
         if !realTimeFeed {
             liveFeedInteractor.pushFeed(withId: post.id)
         }
     }
     
     func emptyPersistentStore() {
+        liveFeedInteractor.clearFeeds()
         dataStore().truncate()
     }
     

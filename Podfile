@@ -11,7 +11,7 @@ target 'TwitterFeedUI' do
   pod 'TwitterKit'
   pod 'RealmSwift'
   pod 'Kingfisher', '~> 4.0'
-  pod 'MulticastDelegateSwift'
+  pod 'ReachabilitySwift'
   target 'TwitterFeedUITests' do
     inherit! :search_paths
     # Pods for testing

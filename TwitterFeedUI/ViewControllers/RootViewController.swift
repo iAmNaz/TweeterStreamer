@@ -54,9 +54,28 @@ class RootViewController: UIViewController {
         currentKeyword = keyword
         rootInteractor.loadFeed(forKeyword: currentKeyword!)
     }
+    
+    fileprivate func displayStatus(message: String) {
+        statusLabel.isHidden = false
+        view.bringSubview(toFront: statusLabel)
+        statusLabel.text = message
+    }
 }
 
 extension RootViewController: RootDisplayProtocol {
+    func show(error: String) {
+        displayStatus(message: error)
+    }
+    
+    func showLoading() {
+        displayStatus(message: "loading...")
+    }
+    
+    //TODO: rename to status method
+    func hideLoading() {
+        statusLabel.isHidden = true
+    }
+    
     func showKeyword(keyword: String) {
         keywordTextField.text = keyword
     }

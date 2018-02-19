@@ -8,9 +8,15 @@
 
 import UIKit
 import TwitterKit
+import Reachability
+enum HTTPMethod {
+    static let GET = "GET"
+    static let POST = "POST"
+}
 
 class TwitterAPI: NSObject, APIProtocol {
     fileprivate var dataProcessor: DataProcessorProtocol!
+    fileprivate let reachability = Reachability()!
     
     var appInteractor: AppInteractorProtocol!
     
@@ -23,11 +29,15 @@ class TwitterAPI: NSObject, APIProtocol {
     fileprivate let sampleEndPoint = "https://stream.twitter.com/1.1/statuses/sample.json"
     fileprivate var session: TWTRSession?
     
+    
     init(dataProcessor: TwitterDataProcessor) {
         super.init()
         self.dataProcessor = dataProcessor
         self.dataProcessor.delegate = self
+        
         self.defaultSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        
+        monitorReachability()
     }
     
     //MARK: - APIProtocol
@@ -50,7 +60,7 @@ class TwitterAPI: NSObject, APIProtocol {
     }
     
     func reconnect(withKeyword keyword: String) {
-      let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: keyword)
+        let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: keyword)
         let request = creatRequest(endPoint: filteredEndpoint)
         print(request)
         dataTask = defaultSession.dataTask(with: request)
@@ -62,6 +72,24 @@ class TwitterAPI: NSObject, APIProtocol {
     }
     
     //MARK: - Private
+    fileprivate func monitorReachability() {
+        reachability.whenReachable = { reachability in
+            if reachability.connection == .none {
+                DispatchQueue.main.async {
+                    self.appInteractor.didFail(error: APIError.noConnectionError)
+                }
+            }else{
+                self.appInteractor.resumeStream()
+            }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+    
     fileprivate func creatRequest(endPoint: String) -> URLRequest {
         let client = TWTRAPIClient.withCurrentUser()
         return client.urlRequest(withMethod: HTTPMethod.GET, url: endPoint, parameters: nil, error: nil)
@@ -83,8 +111,12 @@ extension TwitterAPI: URLSessionDataDelegate, URLSessionDelegate{
         }
     }
     
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        appInteractor.didFail(error: error)
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if reachability.connection == .none {
+            DispatchQueue.main.async {
+                self.appInteractor.didFail(error: APIError.noConnectionError)
+            }
+        }
     }
 }
 

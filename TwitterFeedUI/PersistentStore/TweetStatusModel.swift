@@ -8,6 +8,9 @@
 
 import RealmSwift
 
+/**
+ Represents a twitter status
+ */
 class TweetStatusModel: Object {
     @objc dynamic var dateCreated: Date!
     @objc dynamic var id: String!
@@ -16,15 +19,16 @@ class TweetStatusModel: Object {
     @objc dynamic var timeStamp = 0
     
     override static func primaryKey() -> String? {
-        return "id"
+        return PostFields.id
     }
     
+    //Helper method that generates a post object
     func post() -> Post? {
-        if dateCreated == nil {
+        if self.user == nil {
             return nil
         }
         
-        let user = PostedBy(id: self.user.id, name: self.user.name, screenName: self.user.screenName, url: self.user.url, profileImage: self.user.profileImage)
-        return Post(dateCreated: dateCreated, id: id, text: text, postedBy: user)
+        let postUser = PostedBy(id: self.user.id, name: self.user.name, screenName: self.user.screenName, url: self.user.url, profileImage: self.user.profileImage)
+        return Post(dateCreated: dateCreated, id: id, text: text, postedBy: postUser)
     }
 }

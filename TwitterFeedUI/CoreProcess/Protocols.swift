@@ -36,7 +36,6 @@ protocol APIProtocol {
 protocol DataStoreProtocol {
     var delegate: DataStoreDelegate? { get set }
     func insert(post: PostProtocol)
-    func fetchPosts(timeStamp: Int) -> Post?
     func fetchPost(withId id: String) -> Post?
     func fetchRecent() -> Post?
     func deletePost(withId id: String)
