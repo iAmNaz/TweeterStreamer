@@ -21,7 +21,10 @@ struct DependencyFactory: DependencyFactoryProtocol {
     
     func remoteAPI(dataProcessor: TwitterDataProcessor) -> APIProtocol {
         if env == Environment.Live {
+            
             let api = TwitterAPI(dataProcessor: dataProcessor)
+            let urlSession = URLSession(configuration: .default, delegate: api, delegateQueue: nil)
+            api.setupURLSession(session: urlSession)
             return api
         }
         return FakeTwitterAPI(dataProcessor: dataProcessor)

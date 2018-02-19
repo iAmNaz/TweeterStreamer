@@ -1,26 +1,19 @@
 //
-//  FakeTwitterAPI.swift
-//  TwitterFeedUI
+//  MockAPI.swift
+//  TwitterFeedTests
 //
-//  Created by Nazario Mariano on 16/02/2018.
+//  Created by Nazario Mariano on 19/02/2018.
 //  Copyright © 2018 Nazario Mariano. All rights reserved.
 //
 
 import UIKit
+@testable import TwitterFeedUI
 
-class FakeTwitterAPI: APIProtocol {
-    
+class MockAPI: APIProtocol {
     var appInteractor: AppInteractorProtocol!
-    var loggedIn = false
-    fileprivate var dataProcessor: DataProcessorProtocol
-    
-    init(dataProcessor: TwitterDataProcessor) {
-        self.dataProcessor = dataProcessor
-        
-    }
     
     func authenticated() -> Bool {
-        return loggedIn
+        return true
     }
     
     func initializeService() {
@@ -28,8 +21,6 @@ class FakeTwitterAPI: APIProtocol {
     }
     
     func authenticateClient(completionBlk: @escaping (Error?) -> ()) {
-//        completionBlk(AuthError.failedAuthError)
-        loggedIn = true
         completionBlk(nil)
     }
     
@@ -42,6 +33,6 @@ class FakeTwitterAPI: APIProtocol {
     }
     
     func deauthorizeClient() {
-        loggedIn = false
+        
     }
 }

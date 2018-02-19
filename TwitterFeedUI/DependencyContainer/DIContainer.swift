@@ -71,12 +71,8 @@ extension AppDelegate {
                 
                 let viewController = controller
                 var interactor = try! container.resolve() as LoginInteractorProtocol
-                    interactor.appInteractor = try! container.resolve() as AppInteractor
-//                let presenter = LoginPresenter()
-                
+                    interactor.appInteractor = try! container.resolve() as AppInteractor                
                     viewController.loginInteractor = interactor
-//                    interactor.presenter = presenter
-//                    presenter.viewController = viewController
         }
         
         container.register(tag: UIViewController.Tags.rootView) { RootViewController() }

@@ -42,7 +42,6 @@ class RealmDataStore: NSObject, DataStoreProtocol {
         guard let tweet = sortedPosts.first else {
             return nil
         }
-
         return tweet.post()
     }
     

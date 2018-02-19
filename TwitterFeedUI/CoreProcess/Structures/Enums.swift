@@ -23,3 +23,18 @@ extension APIError: LocalizedError {
         }
     }
 }
+
+enum AuthError: Error {
+    case failedAuthError
+}
+
+extension AuthError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .failedAuthError:
+            return NSLocalizedString("Login failed.", comment: "failed auth")
+        }
+    }
+}
+
+

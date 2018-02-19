@@ -1,15 +1,14 @@
 //
-//  TwitterFeedUITests.swift
-//  TwitterFeedUITests
+//  TwitterFeedTests.swift
+//  TwitterFeedTests
 //
-//  Created by Nazario Mariano on 15/02/2018.
+//  Created by Nazario Mariano on 19/02/2018.
 //  Copyright © 2018 Nazario Mariano. All rights reserved.
 //
 
 import XCTest
-@testable import TwitterFeedUI
 
-class TwitterFeedUITests: XCTestCase {
+class TwitterFeedTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

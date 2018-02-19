@@ -31,11 +31,7 @@ class TwitterAPI: NSObject, APIProtocol {
     
     init(dataProcessor: TwitterDataProcessor) {
         super.init()
-        self.dataProcessor = dataProcessor
-        self.dataProcessor.delegate = self
-        
-        self.defaultSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        
+        setupDataProcessor(dataProcessor: dataProcessor)
         monitorReachability()
     }
     
@@ -43,12 +39,9 @@ class TwitterAPI: NSObject, APIProtocol {
     func initializeService() {
         Twitter.sharedInstance().start(withConsumerKey:consumerKey, consumerSecret:consumerSecret)
     }
-
+    
     func reconnect(withKeyword keyword: String) {
-        
-        let allowedCharacters = NSCharacterSet.urlFragmentAllowed
-        let encodedString = keyword.addingPercentEncoding(withAllowedCharacters: allowedCharacters)
-        let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: encodedString!)
+        let filteredEndpoint = assembleEndPoint(forKeyword: keyword)
     
         let request = creatRequest(endPoint: filteredEndpoint)
         print(request)
@@ -66,6 +59,22 @@ class TwitterAPI: NSObject, APIProtocol {
     }
     
     //MARK: - Private
+    fileprivate func assembleEndPoint(forKeyword keyword: String) -> String {
+        let allowedCharacters = NSCharacterSet.urlFragmentAllowed
+        let encodedString = keyword.addingPercentEncoding(withAllowedCharacters: allowedCharacters)
+        let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: encodedString!)
+        return filteredEndpoint
+    }
+    
+    func setupURLSession(session: URLSession) {
+        self.defaultSession = session
+    }
+    
+    fileprivate func setupDataProcessor(dataProcessor: TwitterDataProcessor) {
+        self.dataProcessor = dataProcessor
+        self.dataProcessor.delegate = self
+    }
+    
     fileprivate func monitorReachability() {
         reachability.whenReachable = { reachability in
             self.appInteractor.resumeStream()
