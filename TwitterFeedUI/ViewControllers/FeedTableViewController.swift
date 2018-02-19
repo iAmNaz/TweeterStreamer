@@ -9,36 +9,13 @@
 import UIKit
 import Kingfisher
 
-class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
+class FeedTableViewController: UITableViewController {
     
     var appController: AppControllerProtocol!
-    var containerView: ContainerViewDisplayProtocol!
     var liveFeedInteractor: LiveFeedInteractorProtocol!
+    
     fileprivate var posts: [PostViewModelProtocol]!
-    
-    let cellIdentifier = "StatusCell"
-    
-    func showPost(post: PostViewModelProtocol) {
-        posts.insert(post, at: 0)
-        tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        tableView.endUpdates()
-        
-        liveFeedInteractor.postDisplayed(id: post.id)
-        
-        if posts.count > 5 {
-            let post = posts.removeLast()
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [IndexPath(row: 5, section: 0)], with: .automatic)
-            tableView.endUpdates()
-            removeCachedImage(withKey: post.id)
-        }
-    }
-    
-    func showEmptyFeed() {
-        posts = [PostViewModelProtocol]()
-        tableView.reloadData()
-    }
+    fileprivate let cellIdentifier = "StatusCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +27,28 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
     }
 
     // MARK: - Private
-    func removeCachedImage(withKey key: String){
+    fileprivate func removeOldPost(post: PostViewModelProtocol) {
+        if posts.count > 5 {
+            let post = posts.removeLast()
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [IndexPath(row: 5, section: 0)], with: .automatic)
+            tableView.endUpdates()
+            removeCachedImage(withKey: post.id)
+        }
+    }
+    
+    fileprivate func broadcastPostWasAdded(post: PostViewModelProtocol) {
+        liveFeedInteractor.postDisplayed(id: post.id)
+    }
+    
+    fileprivate func insertNewPost(post: PostViewModelProtocol) {
+        posts.insert(post, at: 0)
+        tableView.beginUpdates()
+        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        tableView.endUpdates()
+    }
+    
+    fileprivate func removeCachedImage(withKey key: String){
         ImageCache.default.removeImage(forKey: key)
     }
     
@@ -78,10 +76,7 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        liveFeedInteractor.stopFeeds()
-    }
-    
+    // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "StatusDetail" {
             if let viewController = segue.destination as? DetailViewController {
@@ -90,5 +85,18 @@ class FeedTableViewController: UITableViewController, LiveFeedDisplayProtocol {
                 viewController.post = post
             }
         }
+    }
+}
+
+extension FeedTableViewController: LiveFeedDisplayProtocol {
+    func showPost(post: PostViewModelProtocol) {
+        insertNewPost(post: post)
+        broadcastPostWasAdded(post: post)
+        removeOldPost(post: post)
+    }
+    
+    func showEmptyFeed() {
+        posts = [PostViewModelProtocol]()
+        tableView.reloadData()
     }
 }

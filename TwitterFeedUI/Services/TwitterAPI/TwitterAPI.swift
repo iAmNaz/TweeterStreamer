@@ -9,26 +9,25 @@
 import UIKit
 import TwitterKit
 import Reachability
+
 enum HTTPMethod {
     static let GET = "GET"
     static let POST = "POST"
 }
 
 class TwitterAPI: NSObject, APIProtocol {
-    fileprivate var dataProcessor: DataProcessorProtocol!
-    fileprivate let reachability = Reachability()!
     
     var appInteractor: AppInteractorProtocol!
+    var session: TWTRSession?
     
+    fileprivate var dataProcessor: DataProcessorProtocol!
+    fileprivate let reachability = Reachability()!
     fileprivate var defaultSession: URLSession! = nil
     fileprivate var dataTask: URLSessionDataTask?
     fileprivate let consumerKey = "SBqYuEU4gNi0ejWeTbwGwGLbb"
     fileprivate let consumerSecret = "QkFrmvz4i1giK8vsFEkI6wwUcggsOCq3rUlzV8RQheN3O5Js64"
-    
     fileprivate let streamAPIEndPoint = "https://stream.twitter.com/1.1/statuses/filter.json"
     fileprivate let sampleEndPoint = "https://stream.twitter.com/1.1/statuses/sample.json"
-    fileprivate var session: TWTRSession?
-    
     
     init(dataProcessor: TwitterDataProcessor) {
         super.init()
@@ -44,23 +43,13 @@ class TwitterAPI: NSObject, APIProtocol {
     func initializeService() {
         Twitter.sharedInstance().start(withConsumerKey:consumerKey, consumerSecret:consumerSecret)
     }
-    
-    func authenticateClient(completionBlk: @escaping (Error?) -> ()) {
-        Twitter.sharedInstance().logIn(completion: { (session, error) in
-            if (session != nil) {
-                self.session = session
-            }
-            completionBlk(error)
-        })
-    }
-    
-    func authenticated() -> Bool {
-        let store = Twitter.sharedInstance().sessionStore
-        return store.session() != nil && store.session()?.authToken != nil
-    }
-    
+
     func reconnect(withKeyword keyword: String) {
-        let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: keyword)
+        
+        let allowedCharacters = NSCharacterSet.urlFragmentAllowed
+        let encodedString = keyword.addingPercentEncoding(withAllowedCharacters: allowedCharacters)
+        let filteredEndpoint = streamAPIEndPoint.appendTrackFilter(key: encodedString!)
+    
         let request = creatRequest(endPoint: filteredEndpoint)
         print(request)
         dataTask = defaultSession.dataTask(with: request)
@@ -71,15 +60,20 @@ class TwitterAPI: NSObject, APIProtocol {
         dataTask?.cancel()
     }
     
+    fileprivate func creatRequest(endPoint: String) -> URLRequest {
+        let client = TWTRAPIClient.withCurrentUser()
+        return client.urlRequest(withMethod: HTTPMethod.GET, url: endPoint, parameters: nil, error: nil)
+    }
+    
     //MARK: - Private
     fileprivate func monitorReachability() {
         reachability.whenReachable = { reachability in
-            if reachability.connection == .none {
-                DispatchQueue.main.async {
-                    self.appInteractor.didFail(error: APIError.noConnectionError)
-                }
-            }else{
-                self.appInteractor.resumeStream()
+            self.appInteractor.resumeStream()
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.appInteractor.didFail(error: APIError.noConnectionError)
             }
         }
         
@@ -88,11 +82,6 @@ class TwitterAPI: NSObject, APIProtocol {
         } catch {
             print("Unable to start notifier")
         }
-    }
-    
-    fileprivate func creatRequest(endPoint: String) -> URLRequest {
-        let client = TWTRAPIClient.withCurrentUser()
-        return client.urlRequest(withMethod: HTTPMethod.GET, url: endPoint, parameters: nil, error: nil)
     }
 }
 

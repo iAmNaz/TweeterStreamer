@@ -10,7 +10,6 @@ import UIKit
 
 class LoginViewController: UIViewController {
     var loginInteractor: LoginInteractorProtocol!
-    var containerView: ContainerViewDisplayProtocol!
     var appController: AppControllerProtocol!
     
     override func viewDidLoad() {
@@ -28,13 +27,3 @@ class LoginViewController: UIViewController {
     }
 }
 
-
-extension LoginViewController: LoginDisplayProtocol {
-    func showLoginView() {
-        containerView?.show(view: .LoginView)
-    }
-    
-    func hideLoginView() {
-        containerView?.hide(view: .LoginView)
-    }
-}

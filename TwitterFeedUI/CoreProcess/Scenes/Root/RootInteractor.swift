@@ -6,6 +6,9 @@
 //  Copyright © 2018 Nazario Mariano. All rights reserved.
 //
 
+/**
+  Manages some high level none core operations
+ */
 protocol RootInteractorProtocol {
     var appInteractor: AppInteractor! { get set }
     var presenter: RootPresenterProtocol! { get set }
@@ -31,7 +34,7 @@ class RootInteractor: RootInteractorProtocol {
     }
     
     func loadFeed(forKeyword keyword: String) {
-        appInteractor.startLiveStreamWithKeywod(keyword: keyword)
+        appInteractor.start(keyword: keyword)
     }
     
     func resumed(withKeyword: String) {

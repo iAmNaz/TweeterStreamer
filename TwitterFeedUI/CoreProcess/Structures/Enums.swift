@@ -17,9 +17,9 @@ extension APIError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .noConnectionError:
-            return NSLocalizedString("You are not connected to the internet. Retrying...", comment: "no connection")
+            return NSLocalizedString("You are not connected to the internet.", comment: "no connection")
         case .otherConnectionError:
-            return NSLocalizedString("An error occured when connecting. Retrying...", comment: "connection error")
+            return NSLocalizedString("An error occured when connecting.", comment: "connection error")
         }
     }
 }

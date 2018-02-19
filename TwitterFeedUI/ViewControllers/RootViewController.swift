@@ -19,23 +19,20 @@ protocol FeedItemViewModel {
     var text: String { get set }
 }
 
-protocol ContainerViewDisplayProtocol {
-    func hide(view: ContainerView)
-    func show(view: ContainerView)
-}
-
 class RootViewController: UIViewController {
-
-    @IBOutlet weak var keywordTextField: UITextField!
+    
+    @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var feedViewContainer: UIView!
     @IBOutlet weak var loginViewContainer: UIView!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var navigationBar: UINavigationBar!
     
     var rootInteractor: RootInteractorProtocol!
     var appController: AppControllerProtocol!
+    var appInteractor: AppInteractorProtocol!
     
     fileprivate var currentKeyword: String?
+    fileprivate var searchActive : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +47,12 @@ class RootViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    @IBAction func logoutAction(_ sender: Any) {
+        loggedOutView()
+        appInteractor.logout()
+    }
+    
+    //MARK - Private
     fileprivate func keywordEntered(keyword: String){
         currentKeyword = keyword
         rootInteractor.loadFeed(forKeyword: currentKeyword!)
@@ -60,78 +63,75 @@ class RootViewController: UIViewController {
         view.bringSubview(toFront: statusLabel)
         statusLabel.text = message
     }
+    
+    fileprivate func loggedInView() {
+        hideStatus()
+        loginViewContainer.isHidden = true
+        feedViewContainer.isHidden = false
+        logoutButton.isHidden = false
+        searchBar.isHidden = false
+    }
+    
+    fileprivate func loggedOutView() {
+        logoutButton.isHidden = true
+        statusLabel.isHidden = true
+        searchBar.isHidden = true
+        feedViewContainer.isHidden = true
+        loginViewContainer.isHidden = false
+        searchBar.endEditing(true)
+    }
 }
 
 extension RootViewController: RootDisplayProtocol {
 
-    func show(error: String) {
-        displayStatus(message: error)
+    func show(message: String) {
+        displayStatus(message: message)
     }
     
-    func showLoading() {
+    func showProgress() {
         displayStatus(message: "loading...")
     }
     
-
     func hideStatus() {
         statusLabel.isHidden = true
     }
     
-    func showKeyword(keyword: String) {
-        keywordTextField.text = keyword
+    func showAuthRequiredView() {
+        loggedOutView()
     }
     
-    func showAuthView() {
-        statusLabel.isHidden = true
-        loginViewContainer.isHidden = false
-        feedViewContainer.isHidden = true
-        navigationBar.isHidden = true
-    }
-    
+    //Called after auth or if authorized
     func showFeedView() {
-        keywordTextField.isHidden = false
-        loginViewContainer.isHidden = true
-        navigationBar.isHidden = false
-        feedViewContainer.isHidden = false
+        loggedInView()
     }
     
-    func showFeedView(withModels: [String]) {
-        feedViewContainer.isHidden = false
-    }
-    
-    func showLoadingFeeds() {
-        statusLabel.isHidden = false
-        statusLabel.text = "loading feeds..."
+    func showKeyword(keyword: String) {
+        searchBar.text = keyword
     }
 }
 
-extension RootViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        if (textField.text?.isEmpty)!  {
-            return false
-        }
-        let lowerCased = textField.text!.lowercased()
-        view.endEditing(true)
-        keywordEntered(keyword: lowerCased)
+extension RootViewController: UISearchBarDelegate {
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
         return true
     }
-}
-
-extension RootViewController: ContainerViewDisplayProtocol {
-    func hide(view: ContainerView) {
-        if view == .FeedView {
-            feedViewContainer.isHidden = true
-        }else{
-            loginViewContainer.isHidden = true
-        }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = currentKeyword
+        self.searchBar.endEditing(true)
     }
     
-    func show(view: ContainerView) {
-        if view == .LoginView {
-            feedViewContainer.isHidden = false
-        }else{
-            loginViewContainer.isHidden = false
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //dismiss keyboard
+        self.searchBar.endEditing(true)
+        
+        //prevent empty text
+        if (searchBar.text?.isEmpty)!  {
+            searchBar.text = currentKeyword
+            return
         }
+        
+        let lowerCased = searchBar.text!.lowercased()
+        currentKeyword = lowerCased
+        keywordEntered(keyword: lowerCased)
     }
 }

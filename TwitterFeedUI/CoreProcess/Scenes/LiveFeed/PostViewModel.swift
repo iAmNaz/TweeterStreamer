@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+    View level presentation of a post
+ */
 struct PostViewModel: PostViewModelProtocol {
     var id: String
     var screenName: String

@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ Twitter status json object representation
+ */
 struct TweetStatus: Codable {
     var dateCreated: Date
     var id: String

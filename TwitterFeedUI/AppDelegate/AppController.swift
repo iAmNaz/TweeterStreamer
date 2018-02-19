@@ -47,7 +47,7 @@ class AppController: NSObject, AppControllerProtocol {
     }
     
     func didBecomeActive() {
-        app.resumeStream()
+        app.didBecomeActive()
     }
     
     func sentToBackground() {

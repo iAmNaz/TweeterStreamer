@@ -8,13 +8,11 @@
 
 protocol RootDisplayProtocol {
     func showFeedView()
-    func showFeedView(withModels: [String])
-    func showLoadingFeeds()
-    func showAuthView()
-    func showKeyword(keyword: String)
-    func showLoading()
+    func showAuthRequiredView()
+    func showProgress()
     func hideStatus()
-    func show(error: String)
+    func show(message: String)
+    func showKeyword(keyword: String)
 }
 
 protocol RootPresenterProtocol {
@@ -35,7 +33,7 @@ class RootPresenter: RootPresenterProtocol {
     }
     
     func presentAuthView() {
-        viewController.showAuthView()
+        viewController.showAuthRequiredView()
     }
     
     func presentCached(keyword: String) {
@@ -43,7 +41,7 @@ class RootPresenter: RootPresenterProtocol {
     }
     
     func presentProgress() {
-        viewController.showLoading()
+        viewController.showProgress()
     }
     
     func presentReadyFeed() {
@@ -52,9 +50,9 @@ class RootPresenter: RootPresenterProtocol {
     
     func present(error: Error?) {
         if error != nil {
-            viewController.show(error: (error?.localizedDescription)!)
+            viewController.show(message: (error?.localizedDescription)!)
         }else{
-            viewController.show(error: "An error has occured")
+            viewController.show(message: "An error has occured")
         }
     }
 }

@@ -29,10 +29,10 @@
 		45C739932035E78200A23CB9 /* TwitterDataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C7398B2035E78200A23CB9 /* TwitterDataProcessor.swift */; };
 		45C739942035E78200A23CB9 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C7398C2035E78200A23CB9 /* Enums.swift */; };
 		45C739952035E78200A23CB9 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C7398D2035E78200A23CB9 /* Protocols.swift */; };
-		45C739962035E78200A23CB9 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C7398F2035E78200A23CB9 /* UserInfo.swift */; };
+		45D8E07D203A9E7500B699C6 /* TwitterAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8E07C203A9E7500B699C6 /* TwitterAuthentication.swift */; };
+		45D8E081203AA2EE00B699C6 /* AppInteractor+DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8E080203AA2EE00B699C6 /* AppInteractor+DataStore.swift */; };
+		45D8E083203AA31700B699C6 /* AppInteractor+Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8E082203AA31700B699C6 /* AppInteractor+Authentication.swift */; };
 		45EEC65120366D5200359432 /* LiveFeedInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65020366D5200359432 /* LiveFeedInteractor.swift */; };
-		45EEC65620366E5200359432 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65520366E5200359432 /* UserProtocol.swift */; };
-		45EEC65820366EAE00359432 /* TwitterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65720366EAE00359432 /* TwitterUser.swift */; };
 		45EEC65A203671BE00359432 /* AppInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC659203671BE00359432 /* AppInteractor.swift */; };
 		45EEC65C203672A100359432 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65B203672A100359432 /* AppController.swift */; };
 		45EEC6602036A1A800359432 /* AppSceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC65F2036A1A800359432 /* AppSceneManager.swift */; };
@@ -44,7 +44,6 @@
 		45EEC6702036AAA700359432 /* RealmDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC66F2036AAA700359432 /* RealmDataStore.swift */; };
 		45EEC6722036AB6E00359432 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC6712036AB6E00359432 /* DIContainer.swift */; };
 		45EEC6752036B27B00359432 /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC6742036B27B00359432 /* LoginInteractor.swift */; };
-		45EEC6772036B64300359432 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC6762036B64300359432 /* LoginPresenter.swift */; };
 		45EEC67A2036CE1700359432 /* RootInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC6792036CE1700359432 /* RootInteractor.swift */; };
 		45EEC67C2036CE8000359432 /* RootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EEC67B2036CE8000359432 /* RootPresenter.swift */; };
 		45F49C07203958CE00918E02 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F49C06203958CE00918E02 /* RepeatingTimer.swift */; };
@@ -103,10 +102,10 @@
 		45C7398B2035E78200A23CB9 /* TwitterDataProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterDataProcessor.swift; sourceTree = "<group>"; };
 		45C7398C2035E78200A23CB9 /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		45C7398D2035E78200A23CB9 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
-		45C7398F2035E78200A23CB9 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		45D8E07C203A9E7500B699C6 /* TwitterAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterAuthentication.swift; sourceTree = "<group>"; };
+		45D8E080203AA2EE00B699C6 /* AppInteractor+DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppInteractor+DataStore.swift"; sourceTree = "<group>"; };
+		45D8E082203AA31700B699C6 /* AppInteractor+Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppInteractor+Authentication.swift"; sourceTree = "<group>"; };
 		45EEC65020366D5200359432 /* LiveFeedInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveFeedInteractor.swift; sourceTree = "<group>"; };
-		45EEC65520366E5200359432 /* UserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
-		45EEC65720366EAE00359432 /* TwitterUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
 		45EEC659203671BE00359432 /* AppInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInteractor.swift; sourceTree = "<group>"; };
 		45EEC65B203672A100359432 /* AppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		45EEC65F2036A1A800359432 /* AppSceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSceneManager.swift; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 		45EEC66F2036AAA700359432 /* RealmDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataStore.swift; sourceTree = "<group>"; };
 		45EEC6712036AB6E00359432 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		45EEC6742036B27B00359432 /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
-		45EEC6762036B64300359432 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		45EEC6792036CE1700359432 /* RootInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootInteractor.swift; sourceTree = "<group>"; };
 		45EEC67B2036CE8000359432 /* RootPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPresenter.swift; sourceTree = "<group>"; };
 		45F49C06203958CE00918E02 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
@@ -306,7 +304,6 @@
 			isa = PBXGroup;
 			children = (
 				45C739872035E78200A23CB9 /* TwitterAPI */,
-				45C7398E2035E78200A23CB9 /* Entities */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -316,31 +313,38 @@
 			children = (
 				45BA13792038309C005C55D7 /* TwitterModels */,
 				45C739882035E78200A23CB9 /* TwitterAPI.swift */,
+				45D8E07C203A9E7500B699C6 /* TwitterAuthentication.swift */,
 				45C7398B2035E78200A23CB9 /* TwitterDataProcessor.swift */,
-				45EEC65720366EAE00359432 /* TwitterUser.swift */,
 			);
 			path = TwitterAPI;
-			sourceTree = "<group>";
-		};
-		45C7398E2035E78200A23CB9 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				45C7398F2035E78200A23CB9 /* UserInfo.swift */,
-			);
-			path = Entities;
 			sourceTree = "<group>";
 		};
 		45C739972035E7BF00A23CB9 /* CoreProcess */ = {
 			isa = PBXGroup;
 			children = (
-				45C7398C2035E78200A23CB9 /* Enums.swift */,
-				45F49C0C2039A11E00918E02 /* Aux */,
-				45C7398D2035E78200A23CB9 /* Protocols.swift */,
-				45F49C06203958CE00918E02 /* RepeatingTimer.swift */,
+				45D8E07F203AA04200B699C6 /* Structures */,
+				45D8E07E203AA02900B699C6 /* Util */,
 				45EEC65420366E3000359432 /* Entities */,
 				45EEC64F20366D2900359432 /* Scenes */,
 			);
 			path = CoreProcess;
+			sourceTree = "<group>";
+		};
+		45D8E07E203AA02900B699C6 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				45F49C06203958CE00918E02 /* RepeatingTimer.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		45D8E07F203AA04200B699C6 /* Structures */ = {
+			isa = PBXGroup;
+			children = (
+				45C7398C2035E78200A23CB9 /* Enums.swift */,
+				45C7398D2035E78200A23CB9 /* Protocols.swift */,
+			);
+			path = Structures;
 			sourceTree = "<group>";
 		};
 		45EEC64F20366D2900359432 /* Scenes */ = {
@@ -357,7 +361,6 @@
 		45EEC65420366E3000359432 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				45EEC65520366E5200359432 /* UserProtocol.swift */,
 				45BA137A203871E3005C55D7 /* Post.swift */,
 				45BA137C203872AC005C55D7 /* PostedBy.swift */,
 			);
@@ -368,6 +371,8 @@
 			isa = PBXGroup;
 			children = (
 				45EEC659203671BE00359432 /* AppInteractor.swift */,
+				45D8E080203AA2EE00B699C6 /* AppInteractor+DataStore.swift */,
+				45D8E082203AA31700B699C6 /* AppInteractor+Authentication.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -413,7 +418,6 @@
 			isa = PBXGroup;
 			children = (
 				45EEC6742036B27B00359432 /* LoginInteractor.swift */,
-				45EEC6762036B64300359432 /* LoginPresenter.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -425,13 +429,6 @@
 				45EEC67B2036CE8000359432 /* RootPresenter.swift */,
 			);
 			path = Root;
-			sourceTree = "<group>";
-		};
-		45F49C0C2039A11E00918E02 /* Aux */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Aux;
 			sourceTree = "<group>";
 		};
 		B1093116A383273D16695C5B /* Pods */ = {
@@ -768,6 +765,7 @@
 				45BA137620383015005C55D7 /* TweetUserModel.swift in Sources */,
 				4589D26D2035809E002FE02A /* RootViewController.swift in Sources */,
 				45BA137D203872AC005C55D7 /* PostedBy.swift in Sources */,
+				45D8E083203AA31700B699C6 /* AppInteractor+Authentication.swift in Sources */,
 				45EEC6752036B27B00359432 /* LoginInteractor.swift in Sources */,
 				45BA13782038303D005C55D7 /* TweetStatusModel.swift in Sources */,
 				45C739912035E78200A23CB9 /* TweetStatus.swift in Sources */,
@@ -775,13 +773,12 @@
 				45C739932035E78200A23CB9 /* TwitterDataProcessor.swift in Sources */,
 				45EEC6662036A78F00359432 /* DIFactory.swift in Sources */,
 				45EEC6692036A7D100359432 /* Configuration.swift in Sources */,
-				45EEC65620366E5200359432 /* UserProtocol.swift in Sources */,
 				45EEC67C2036CE8000359432 /* RootPresenter.swift in Sources */,
+				45D8E081203AA2EE00B699C6 /* AppInteractor+DataStore.swift in Sources */,
 				45EEC6702036AAA700359432 /* RealmDataStore.swift in Sources */,
 				45EEC6622036A40D00359432 /* LiveFeedPresenter.swift in Sources */,
 				45EEC65120366D5200359432 /* LiveFeedInteractor.swift in Sources */,
 				45EEC66B2036AA0300359432 /* FakeTwitterAPI.swift in Sources */,
-				45EEC65820366EAE00359432 /* TwitterUser.swift in Sources */,
 				4589D29D20358B4A002FE02A /* TwitterButton.swift in Sources */,
 				45EEC66D2036AA5400359432 /* FakeDataStore.swift in Sources */,
 				45BA137B203871E3005C55D7 /* Post.swift in Sources */,
@@ -790,12 +787,11 @@
 				45EEC6602036A1A800359432 /* AppSceneManager.swift in Sources */,
 				45EEC65C203672A100359432 /* AppController.swift in Sources */,
 				45EEC67A2036CE1700359432 /* RootInteractor.swift in Sources */,
+				45D8E07D203A9E7500B699C6 /* TwitterAuthentication.swift in Sources */,
 				45A728CC203594E6007F1DCB /* LoginViewController.swift in Sources */,
 				45C739952035E78200A23CB9 /* Protocols.swift in Sources */,
 				456B97042035AB5200BC3102 /* FeedTableViewCell.swift in Sources */,
-				45EEC6772036B64300359432 /* LoginPresenter.swift in Sources */,
 				45C739942035E78200A23CB9 /* Enums.swift in Sources */,
-				45C739962035E78200A23CB9 /* UserInfo.swift in Sources */,
 				45F49C0B2039674900918E02 /* PostViewModel.swift in Sources */,
 				45F49C07203958CE00918E02 /* RepeatingTimer.swift in Sources */,
 				4589D26B2035809E002FE02A /* AppDelegate.swift in Sources */,

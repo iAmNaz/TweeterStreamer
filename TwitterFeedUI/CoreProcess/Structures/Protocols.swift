@@ -7,23 +7,8 @@
 //
 
 /**
- Temporarily stores user information
+ Remote REST services will need to implement this protocol to be used by the application
  */
-protocol UserInfoProtocol {
-    var username: String { get set }
-}
-
-/**
- Represents the current user logged in
- */
-protocol UserAccountProtocol {
-    var username: String! { get set }
-    func editProfile()
-    func save()
-    func authorized()->Bool
-    func logout()
-}
-
 protocol APIProtocol {
     var appInteractor: AppInteractorProtocol! { get set }
     func authenticated() -> Bool
@@ -31,8 +16,12 @@ protocol APIProtocol {
     func authenticateClient(completionBlk: @escaping (Error?) -> ())
     func reconnect(withKeyword keyword: String)
     func disconnect()
+    func deauthorizeClient()
 }
 
+/**
+ Any preferred persistent store must implement this protocol
+ */
 protocol DataStoreProtocol {
     var delegate: DataStoreDelegate? { get set }
     func insert(post: PostProtocol)
@@ -42,6 +31,9 @@ protocol DataStoreProtocol {
     func truncate()
 }
 
+/**
+ An app level role that acts as an agent between the platform app and business logic objects
+ */
 protocol AppControllerProtocol {
     var sceneManager: AppSceneManagerProtocol! { get set }
     var app: AppInteractorProtocol! { get set }
@@ -53,8 +45,4 @@ protocol AppControllerProtocol {
     func authenticated() -> Bool
     func didBecomeActive()
     func sentToBackground()
-}
-
-protocol AuthenticationDelegate {
-    func didAuthenticate()
 }

@@ -20,6 +20,7 @@ protocol DataProcessorDelegate {
 
 class TwitterDataProcessor: DataProcessorProtocol {
     var delegate: DataProcessorDelegate?
+    
     fileprivate let formatter = DateFormatter()
     fileprivate let jsonDecoder = JSONDecoder()
     fileprivate var dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"

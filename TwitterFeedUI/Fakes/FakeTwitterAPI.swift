@@ -9,7 +9,11 @@
 import UIKit
 
 class FakeTwitterAPI: APIProtocol {
-    fileprivate var dataProcessor: DataProcessorProtocol
+    func deauthorizeClient() {
+        
+    }
+    
+     fileprivate var dataProcessor: DataProcessorProtocol
     
     init(dataProcessor: TwitterDataProcessor) {
         self.dataProcessor = dataProcessor

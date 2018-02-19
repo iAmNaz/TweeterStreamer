@@ -6,6 +6,9 @@
 //  Copyright © 2018 Nazario Mariano. All rights reserved.
 //
 
+/**
+ Manages the scheduling of feed output and operations
+ */
 protocol LiveFeedInteractorProtocol {
     var appInteractor: AppInteractorProtocol! { get set }
     var presenter: LiveFeedPresenterProtocol! { get set }
@@ -24,7 +27,6 @@ class LiveFeedInteractor: LiveFeedInteractorProtocol {
     var presenter: LiveFeedPresenterProtocol!
     var timer = RepeatingTimer()
 
-    
     init() {
         timer.interval = 2
     }
@@ -64,5 +66,4 @@ class LiveFeedInteractor: LiveFeedInteractorProtocol {
     func clearFeeds() {
         presenter.presentEmptyFeed()
     }
-    
 }

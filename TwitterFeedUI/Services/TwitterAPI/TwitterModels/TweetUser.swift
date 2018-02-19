@@ -8,7 +8,9 @@
 
 import Foundation
 
-
+/**
+ Twitter user json object representation
+*/
 struct TweetUser: Codable {
     var id: Int
     var name: String
