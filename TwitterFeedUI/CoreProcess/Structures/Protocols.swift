@@ -7,7 +7,7 @@
 //
 
 /**
- Remote REST services will need to implement this protocol to be used by the application
+ Remote backend services' API will need to implement this protocol to be used by the application
  */
 protocol APIProtocol {
     var appInteractor: AppInteractorProtocol! { get set }
