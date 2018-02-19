@@ -13,7 +13,7 @@ protocol RootDisplayProtocol {
     func showAuthView()
     func showKeyword(keyword: String)
     func showLoading()
-    func hideLoading()
+    func hideStatus()
     func show(error: String)
 }
 
@@ -47,7 +47,7 @@ class RootPresenter: RootPresenterProtocol {
     }
     
     func presentReadyFeed() {
-        viewController.hideLoading()
+        viewController.hideStatus()
     }
     
     func present(error: Error?) {
