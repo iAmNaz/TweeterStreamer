@@ -63,6 +63,7 @@ class RootViewController: UIViewController {
 }
 
 extension RootViewController: RootDisplayProtocol {
+
     func show(error: String) {
         displayStatus(message: error)
     }
@@ -71,8 +72,8 @@ extension RootViewController: RootDisplayProtocol {
         displayStatus(message: "loading...")
     }
     
-    //TODO: rename to status method
-    func hideLoading() {
+
+    func hideStatus() {
         statusLabel.isHidden = true
     }
     
@@ -91,7 +92,6 @@ extension RootViewController: RootDisplayProtocol {
         keywordTextField.isHidden = false
         loginViewContainer.isHidden = true
         navigationBar.isHidden = false
-        keywordTextField.becomeFirstResponder()
         feedViewContainer.isHidden = false
     }
     
