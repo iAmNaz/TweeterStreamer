@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TwitterKit
 
 /**
  Generate the appropriate instance, service for a given environment
@@ -21,8 +22,8 @@ struct DependencyFactory: DependencyFactoryProtocol {
     
     func remoteAPI(dataProcessor: TwitterDataProcessor) -> APIProtocol {
         if env == Environment.Live {
-            
-            let api = TwitterAPI(dataProcessor: dataProcessor)
+            let twitterInstance = TwitterShared(twitter: Twitter.sharedInstance())
+            let api = TwitterAPI(dataProcessor: dataProcessor, client: TwitterClient(twitterInstance: twitterInstance))
             let urlSession = URLSession(configuration: .default, delegate: api, delegateQueue: nil)
             api.setupURLSession(session: urlSession)
             return api

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FakeTwitterAPI: APIProtocol {
+class FakeTwitterAPI: APIProtocol, APIAuthProtocol {
     
     var appInteractor: AppInteractorProtocol!
     var loggedIn = false

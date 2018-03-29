@@ -20,6 +20,15 @@ protocol APIProtocol {
 }
 
 /**
+ API authentication requirements
+ */
+protocol APIAuthProtocol {
+    func authenticateClient(completionBlk: @escaping (Error?) -> ())
+    func authenticated() -> Bool
+    func deauthorizeClient()
+}
+
+/**
  Any preferred persistent store must implement this protocol
  */
 protocol DataStoreProtocol {

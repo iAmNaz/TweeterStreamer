@@ -20,29 +20,29 @@ class TwitterAPI: NSObject, APIProtocol {
     var appInteractor: AppInteractorProtocol!
     var session: TWTRSession?
     
+    var client: ClientProtocol!
     fileprivate var dataProcessor: DataProcessorProtocol!
     fileprivate let reachability = Reachability()!
     fileprivate var defaultSession: URLSession! = nil
     fileprivate var dataTask: URLSessionDataTask?
-    fileprivate let consumerKey = "SBqYuEU4gNi0ejWeTbwGwGLbb"
-    fileprivate let consumerSecret = "QkFrmvz4i1giK8vsFEkI6wwUcggsOCq3rUlzV8RQheN3O5Js64"
+    
     fileprivate let streamAPIEndPoint = "https://stream.twitter.com/1.1/statuses/filter.json"
     fileprivate let sampleEndPoint = "https://stream.twitter.com/1.1/statuses/sample.json"
     
-    init(dataProcessor: TwitterDataProcessor) {
+    init(dataProcessor: TwitterDataProcessor, client: ClientProtocol) {
         super.init()
+        self.client = client
         setupDataProcessor(dataProcessor: dataProcessor)
         monitorReachability()
     }
     
     //MARK: - APIProtocol
     func initializeService() {
-        Twitter.sharedInstance().start(withConsumerKey:consumerKey, consumerSecret:consumerSecret)
+        client.initializeClient()
     }
     
     func reconnect(withKeyword keyword: String) {
         let filteredEndpoint = assembleEndPoint(forKeyword: keyword)
-    
         let request = creatRequest(endPoint: filteredEndpoint)
         print(request)
         dataTask = defaultSession.dataTask(with: request)
@@ -54,8 +54,7 @@ class TwitterAPI: NSObject, APIProtocol {
     }
     
     fileprivate func creatRequest(endPoint: String) -> URLRequest {
-        let client = TWTRAPIClient.withCurrentUser()
-        return client.urlRequest(withMethod: HTTPMethod.GET, url: endPoint, parameters: nil, error: nil)
+        return client.creatRequest(endPoint:endPoint)
     }
     
     //MARK: - Private

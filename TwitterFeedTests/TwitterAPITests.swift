@@ -8,26 +8,69 @@
 
 import XCTest
 @testable import TwitterFeedUI
+@testable import TwitterKit
+
+class MockTwitterClient: ClientProtocol {
+    func twitterInstance() -> Twitter {
+        return Twitter.sharedInstance()
+    }
+    
+    func count() -> Int {
+        return 0
+    }
+    
+    func initializeClient() {
+        
+    }
+    
+    func creatRequest(endPoint: String) -> URLRequest {
+        return URLRequest(url: URL(string: "https://google.com")!)
+    }
+}
+
+class MockTwitterShared: NSObject, TwitterInstanceProtocol {
+    var count = 0
+    func logIn(completion: @escaping TWTRLogInCompletion) {
+        completion(nil, nil)
+    }
+    
+    func sessionCount() -> Int {
+        return count
+    }
+    
+    func instance() -> Twitter {
+        return Twitter.sharedInstance()
+    }
+}
 
 class TwitterAPITests: XCTestCase {
+
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
-    func testDataTaskResumeOnReconnect() {
+    func testReconnectWithKeywordResumtsDataTask() {
         let session = MockURLSession()
         let dataProcessor = TwitterDataProcessor()
-        let api = MockTwitterAPI(dataProcessor: dataProcessor)
+        let api = MockTwitterAPI(dataProcessor: dataProcessor, client: MockTwitterClient())
         api.setupURLSession(session: session)
         api.appInteractor = AppInteractor(dataStore: MockDataStore(), router: AppSceneManager(), remoteAPI: api)
         api.reconnect(withKeyword: "keyword")
         XCTAssert(session.dataTask.hasResume == true)
+    }
+    
+    func testAuthenticatedWithNonZeroSessionCountReturnsTrue() {
+        let dataProcessor = TwitterDataProcessor()
+        let twitterInstance = MockTwitterShared()
+        twitterInstance.count = 1
+        let thisApi = TwitterAPI(dataProcessor: dataProcessor, client: TwitterClient(twitterInstance: twitterInstance))
+        thisApi.appInteractor = AppInteractor(dataStore: MockDataStore(), router: AppSceneManager(), remoteAPI: thisApi)
+        XCTAssert(thisApi.authenticated() == true)
+        
     }
 }

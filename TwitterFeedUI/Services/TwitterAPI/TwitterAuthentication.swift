@@ -9,9 +9,10 @@
 import UIKit
 import TwitterKit
 
-extension TwitterAPI {
+@objc //allow overriding of extension
+extension TwitterAPI: APIAuthProtocol {
     func authenticateClient(completionBlk: @escaping (Error?) -> ()) {
-        Twitter.sharedInstance().logIn(completion: { (session, error) in
+        self.client.twitterInstance().logIn(completion: { (session, error) in
             if (session != nil) {
                 self.session = session
             }
@@ -20,12 +21,11 @@ extension TwitterAPI {
     }
     
     func authenticated() -> Bool {
-        let store = Twitter.sharedInstance().sessionStore
-        return store.existingUserSessions().count > 0
+        return self.client.count() > 0
     }
     
     func deauthorizeClient() {
-        let store = Twitter.sharedInstance().sessionStore
+        let store = self.client.twitterInstance().sessionStore
         store.reload()
         
         for case let session as TWTRSession in store.existingUserSessions()

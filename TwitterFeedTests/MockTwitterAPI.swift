@@ -10,11 +10,16 @@ import UIKit
 @testable import TwitterFeedUI
 
 class MockTwitterAPI: TwitterAPI {
+    
     override func initializeService() {
         
     }
     
     func creatRequest(endPoint: String) -> URLRequest {
         return URLRequest(url:URL(string: "http://facebook.com")!)
+    }
+    
+    override func authenticated() -> Bool {
+        return true
     }
 }

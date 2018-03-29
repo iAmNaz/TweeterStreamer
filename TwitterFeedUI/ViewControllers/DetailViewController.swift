@@ -21,10 +21,6 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         displayPost()
     }
-   
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
     // MARK: - Private
     func displayPost() {
